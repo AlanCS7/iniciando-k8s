@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: goserver # Nome do container dentro do Pod (livre escolha)
-          image: alancs7/hello-go:v5.3 # Imagem usada no container (pode usar tag específica ou latest)
+          image: alancs7/hello-go:v5.4 # Imagem usada no container (pode usar tag específica ou latest)
           readinessProbe: # Define um teste de prontidão para o container
             httpGet:
               path: /healthz # Define a URL para o teste de prontidão
@@ -24,16 +24,17 @@ spec:
             periodSeconds: 3 # Define o intervalo entre verificações
             failureThreshold: 1 # Define o número de falhas antes de considerar o container como não pronto
             initialDelaySeconds: 10 # Define o tempo de espera para a resposta do container
-            
-          # livenessProbe: # Define um teste de saúde para o container
-          #   httpGet:
-          #     path: /healthz # Define a URL para o teste de saúde
-          #     port: 8080 # Define a porta para o teste de saúde
-          #   periodSeconds: 5 # Define o intervalo entre verificações
-          # Threshold é um valor limite que, quando ultrapassado, dispara uma ação ou altera um comportamento
-          #   failureThreshold: 3 # Define o número de falhas antes de considerar o container como não saudável e reiniciar
-          #   timeoutSeconds: 1 # Define o tempo de espera para a resposta do container
-          #   successThreshold: 1 # Define o número de sucessos antes de considerar o container como saudável
+
+          livenessProbe: # Define um teste de saúde para o container
+            httpGet:
+              path: /healthz # Define a URL para o teste de saúde
+              port: 8080 # Define a porta para o teste de saúde
+            periodSeconds: 5 # Define o intervalo entre verificações
+            # Threshold é um valor limite que, quando ultrapassado, dispara uma ação ou altera um comportamento
+            failureThreshold: 1 # Define o número de falhas antes de considerar o container como não saudável e reiniciar
+            timeoutSeconds: 1 # Define o tempo de espera para a resposta do container
+            successThreshold: 1 # Define o número de sucessos antes de considerar o container como saudável
+            initialDelaySeconds: 15 # Define o tempo de espera para a resposta do container
 
           envFrom:
             - configMapRef:

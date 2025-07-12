@@ -34,7 +34,7 @@ func Secret(w http.ResponseWriter, r *http.Request) {
 func ConfigMap(w http.ResponseWriter, r *http.Request) {
 	data, err := os.ReadFile("myfamily/family.txt")
 	if err != nil {
-		log.Fatalf("Error reading file: ", err)
+		log.Fatalf("Error reading file: %v", err)
 	}
 
 	fmt.Fprintf(w, "My family: %s.", string(data))
@@ -42,10 +42,11 @@ func ConfigMap(w http.ResponseWriter, r *http.Request) {
 
 func Healthz(w http.ResponseWriter, r *http.Request) {
 	duration := time.Since(startedAt)
+	seconds := duration.Seconds()
 
-	if duration.Seconds() < 10 {
+	if seconds < 10 || seconds > 30 {
 		w.WriteHeader(500)
-		fmt.Fprintf(w, "Duration: %v", duration.Seconds())
+		fmt.Fprintf(w, "Duration: %v", seconds)
 		return
 	}
 
