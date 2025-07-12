@@ -17,24 +17,31 @@ spec:
       containers:
         - name: goserver # Nome do container dentro do Pod (livre escolha)
           image: alancs7/hello-go:v5.4 # Imagem usada no container (pode usar tag específica ou latest)
+
+          startupProbe: # usada para garantir que a aplicação suba antes das outras probes entrarem em ação
+            httpGet:
+              path: /healthz
+              port: 8080
+            # Threshold é um valor limite que, quando ultrapassado, dispara uma ação ou altera um comportamento
+            failureThreshold: 30 # tolera até 30 tentativas (a cada 3s) antes de considerar que a aplicação não subiu e reiniciar o container
+            periodSeconds: 3 # checa a cada 3s se a app já "subiu"
+
           readinessProbe: # Define um teste de prontidão para o container
             httpGet:
-              path: /healthz # Define a URL para o teste de prontidão
-              port: 8080 # Define a porta para o teste de prontidão
-            periodSeconds: 3 # Define o intervalo entre verificações
-            failureThreshold: 1 # Define o número de falhas antes de considerar o container como não pronto
-            initialDelaySeconds: 10 # Define o tempo de espera para a resposta do container
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 10 # aguarda 10s antes da 1ª checagem para ver se a app está pronta
+            periodSeconds: 3 # checa a cada 3s se a app está pronta
+            failureThreshold: 3 # o pod é marcado como NotReady e deixa de receber tráfego se falhar 3 vezes seguidas
 
-          livenessProbe: # Define um teste de saúde para o container
+          livenessProbe:
             httpGet:
-              path: /healthz # Define a URL para o teste de saúde
-              port: 8080 # Define a porta para o teste de saúde
-            periodSeconds: 5 # Define o intervalo entre verificações
-            # Threshold é um valor limite que, quando ultrapassado, dispara uma ação ou altera um comportamento
-            failureThreshold: 1 # Define o número de falhas antes de considerar o container como não saudável e reiniciar
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15 # aguarda 15s antes da 1ª checagem para ver se a app está viva
+            periodSeconds: 5 # checa a cada 5s se a app está viva
+            failureThreshold: 3 # Se falhar 3 vezes consecutivas (resposta inválida ou timeout), o container será reiniciado
             timeoutSeconds: 1 # Define o tempo de espera para a resposta do container
-            successThreshold: 1 # Define o número de sucessos antes de considerar o container como saudável
-            initialDelaySeconds: 15 # Define o tempo de espera para a resposta do container
 
           envFrom:
             - configMapRef:
