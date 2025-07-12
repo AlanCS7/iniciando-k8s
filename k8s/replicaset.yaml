@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: goserver # Nome do ReplicaSet (qualquer identificador único)
+  labels:
+    app: goserver # Label do próprio ReplicaSet (decorativo, não usado no controle dos Pods)
+spec:
+  selector:
+    matchLabels:
+      app: goserver # ❗ Deve bater com os labels dos Pods (abaixo) — é isso que o ReplicaSet usa para gerenciar os Pods
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: goserver # ❗ Deve ser igual ao matchLabels acima — isso define quais Pods fazem parte do ReplicaSet
+    spec:
+      containers:
+        - name: goserver # Nome do container dentro do Pod (pode ser qualquer nome válido)
+          image: alancs7/hello-go:latest
