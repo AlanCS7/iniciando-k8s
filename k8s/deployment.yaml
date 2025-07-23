@@ -16,7 +16,15 @@ spec:
     spec:
       containers:
         - name: goserver # Nome do container dentro do Pod (livre escolha)
-          image: alancs7/hello-go:v5.4 # Imagem usada no container (pode usar tag específica ou latest)
+          image: alancs7/hello-go:v5.5 # Imagem usada no container (pode usar tag específica ou latest)
+
+          resources:
+            requests: # Define os recursos mínimos que o container precisa para rodar - Recurso MÍNIMO garantido
+              cpu: "100m"       # 0.1 núcleo de CPU reservado
+              memory: "128Mi"   # 128 MiB de memória garantida
+            limits: # Define os recursos máximos que o container pode usar - Recurso MÁXIMO permitido
+              cpu: "250m"       # Pode usar até 0.25 núcleos de CPU
+              memory: "256Mi"   # Pode usar até 256 MiB de memória
 
           startupProbe: # usada para garantir que a aplicação suba antes das outras probes entrarem em ação
             httpGet:
