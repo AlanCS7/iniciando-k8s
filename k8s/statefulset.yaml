@@ -23,3 +23,15 @@ spec:
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: root
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-volume # Nome do volume que será montado no container
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-volume
+      spec:
+        accessModes: ["ReadWriteOnce"] # Define o modo de acesso ao volume
+        resources:
+          requests:
+            storage: 5Gi # Define o tamanho do volume solicitado
