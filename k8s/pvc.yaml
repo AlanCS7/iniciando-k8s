@@ -1,3 +1,7 @@
+# Esse arquivo define um PersistentVolumeClaim (PVC) para o servidor Go.
+# O PVC é usado para solicitar armazenamento persistente para o container do servidor Go.
+# O PVC será usado para armazenar dados que precisam ser preservados entre reinicializações do container.
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
