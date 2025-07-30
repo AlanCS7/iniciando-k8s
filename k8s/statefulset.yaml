@@ -1,0 +1,25 @@
+# StatefulSet é usado para aplicações que precisam de persistência e identidade estável
+# Pods gerados pelo StatefulSet serão identificados pelo serviceName
+# O selector deve corresponder aos labels dos Pods
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: mysql-h
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
