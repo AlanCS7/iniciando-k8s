@@ -1,0 +1,16 @@
+# Esse serviço é um Headless Service, usado para StatefulSets
+# Ele não atribui um IP, permitindo que os Pods sejam acessados diretamente pelo DNS
+# Isso é útil para aplicações que precisam de persistência e identidade estável, como bancos de dados
+# O selector deve corresponder aos labels dos Pods gerados pelo StatefulSet
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-h # Nome do serviço (mesmo que o serviceName do StatefulSet)
+spec:
+  selector:
+    app: mysql
+  ports:
+    - name: http
+      port: 3306 # Porta exposta pelo serviço (dentro do cluster)
+  clusterIP: None
