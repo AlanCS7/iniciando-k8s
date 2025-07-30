@@ -1,3 +1,7 @@
+# Deployment é usado para gerenciar Pods no Kubernetes.
+# Ele define o estado desejado dos Pods e garante que o estado atual corresponda ao desejado.
+# É ideal para aplicações que não precisam de persistência ou identidade estável.
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,11 +24,11 @@ spec:
 
           resources:
             requests: # Define os recursos mínimos que o container precisa para rodar - Recurso MÍNIMO garantido
-              cpu: "100m"       # 0.1 núcleo de CPU reservado
-              memory: "128Mi"   # 128 MiB de memória garantida
+              cpu: "100m" # 0.1 núcleo de CPU reservado
+              memory: "128Mi" # 128 MiB de memória garantida
             limits: # Define os recursos máximos que o container pode usar - Recurso MÁXIMO permitido
-              cpu: "250m"       # Pode usar até 0.25 núcleos de CPU
-              memory: "256Mi"   # Pode usar até 256 MiB de memória
+              cpu: "250m" # Pode usar até 0.25 núcleos de CPU
+              memory: "256Mi" # Pode usar até 256 MiB de memória
 
           startupProbe: # usada para garantir que a aplicação suba antes das outras probes entrarem em ação
             httpGet:
